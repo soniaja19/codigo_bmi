@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:codigo_bmi/bmi_brain.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,12 +9,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double heihgt = 150;
   double weight = 60;
-  double bmi = 0;
-  String result = "x";
-  String recomendation = "-";
+
+  // double bmi = 0;
+  // String result = "x";
+  // String recomendation = "-";
+  // String image = "image1";
+
+  BMIBrain mandarina = BMIBrain(height: 0, weight: 0);
 
   @override
   Widget build(BuildContext context) {
+    mandarina.bmiCalculator();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -146,20 +151,28 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    bmi = weight / pow((heihgt / 100), 2);
-                    if (bmi < 18) {
-                      result = "Bajo en Peso";
-                      recomendation =
-                          "Debes de comer un poco màs y hacer ejercicios";
-                    } else if (bmi < 25) {
-                      result = "Normal";
-                      recomendation =
-                          "Todo està bien, pero no olvides hacer màs ejercicios";
-                    } else {
-                      result = "Sobre Peso";
-                      recomendation =
-                          "Debes de comer un màs sano y hacer màs ejercicios";
-                    }
+                    mandarina.height = heihgt;
+                    mandarina.weight = weight;
+
+                    // print(mandarina.bmiCalculator());
+
+                    // bmi = weight / pow((heihgt / 100), 2);
+                    // if (bmi < 18) {
+                    //   result = "Bajo en Peso";
+                    //   recomendation =
+                    //       "Debes de comer un poco màs y hacer ejercicios";
+                    //   image = "image1";
+                    // } else if (bmi < 25) {
+                    //   result = "Normal";
+                    //   recomendation =
+                    //       "Todo està bien, pero no olvides hacer màs ejercicios";
+                    //   image = "image2";
+                    // } else {
+                    //   result = "Sobre Peso";
+                    //   recomendation =
+                    //       "Debes de comer un màs sano y hacer màs ejercicios";
+                    //   image = "image3";
+                    // }
                     setState(() {});
                   },
                   child: const Text("Calcular"),
@@ -182,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                 fontFamily: "Noto Sans", fontSize: 14.0),
                           ),
                           Text(
-                            bmi.toStringAsFixed(1),
+                            mandarina.bmiCalculator().toStringAsFixed(1),
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 32.0,
@@ -191,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            result,
+                            mandarina.getResult(),
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 18.0,
@@ -208,7 +221,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            recomendation,
+                            mandarina.getRecommendation(),
+                            textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontFamily: "Noto Sans",
                               fontSize: 15.0,
@@ -218,8 +232,8 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Image.asset(
-                        "asset/images/image2.png",
-                        height: 60.0,
+                        "asset/images/${mandarina.getImage()}.png",
+                        height: 160.0,
                       ),
                     ],
                   ),
